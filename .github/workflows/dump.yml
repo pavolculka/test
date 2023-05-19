@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: dump actions vars
-        run: echo '{{ vars.VAR_GREETING }}'
+        run: echo '${{ vars.VAR_GREETING }}'
       - name: Dump GitHub context
         id: github_context_step
         run: echo '${{ toJSON(github) }}'
