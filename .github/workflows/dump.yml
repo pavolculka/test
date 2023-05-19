@@ -1,5 +1,5 @@
 name: DUMP
-run-name: DUMP run-name
+run-name: DUMP run-name [ ${{ github.event.commits.message }} ]
 
 on: push
 
