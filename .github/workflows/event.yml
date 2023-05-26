@@ -15,6 +15,9 @@ jobs:
       github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
+      - name: print token
+        run: |
+           echo $GITHUB_TOKEN
       - name: "Comment about changes we can't accept"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
