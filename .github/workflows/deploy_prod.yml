@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo Hello
-        run: echo hello  ${{ ECR_REPOSITORY }}
+        run: echo hello  ${{ vars.ECR_REPOSITORY }}
         env:
           AWS_ENVIRONMENT: prod
     needs: 
