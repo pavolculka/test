@@ -39,14 +39,11 @@ jobs:
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
   
   update-eventbridge:
-    if: |
-      startsWith(github.head_ref, 'CA-')
     uses: ./.github/workflows/build-and-push-app.yml  
     with:
       aws_environment: dev    
     needs: build-and-push-lambdas    
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
-
 
 
   deploy-cdk:
