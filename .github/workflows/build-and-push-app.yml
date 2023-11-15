@@ -30,4 +30,4 @@ jobs:
           ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           AWS_REGION: ${{ vars.AWS_REGION }}
         run: |
-          echo -- $ECR_REGISTRY $ECR_REPOSITORY $BRANCH_TAG $AWS_REGION
+          echo repo: $ECR_REPOSITORY region: $AWS_REGION
