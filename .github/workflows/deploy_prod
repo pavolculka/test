@@ -1,0 +1,39 @@
+name: PRODUCTION Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_deploy:
+        description: 'Services to deploy'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - app
+          - lambda
+          - cdk
+
+
+jobs:
+  build-and-push-app:
+    uses: ./.github/workflows/build-and-push-app.yml  
+    with:
+      aws_environment: prod
+    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
+
+
+  build-and-push-lambdas:
+    uses: ./.github/workflows/build-and-push-lambdas.yml  
+    with:
+      aws_environment: prod
+    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
+
+  deploy-cdk:
+    uses: ./.github/workflows/deploy-cdk.yml      
+    with:
+      aws_environment: prod
+    needs: 
+      - build-and-push-app
+      - build-and-push-lambdas
+    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'cdk'
