@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo Hello
-        run: echo hello
+        run: echo hello ${{ ECR_REPOSITORY }}
         env:
           AWS_ENVIRONMENT: prod
       if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo Hello
-        run: echo hello
+        run: echo hello ${{ vars.ECR_REPOSITORY }}
         env:
           AWS_ENVIRONMENT: prod
       if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo Hello
-        run: echo hello
+        run: echo hello ${{ vars.ECR_REPOSITORY }}
         env:
           AWS_ENVIRONMENT: prod
       needs: 
