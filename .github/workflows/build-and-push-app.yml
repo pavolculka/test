@@ -11,6 +11,7 @@ on:
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   ASSUME_ROLE: ${{ vars.ASSUME_ROLE }}
+  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
 
 jobs:
   ecr-build-and-push:
