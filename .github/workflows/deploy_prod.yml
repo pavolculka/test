@@ -14,23 +14,27 @@ on:
           - lambda
           - cdk
 
-
 jobs:
   build-and-push-app:
-    uses: ./.github/workflows/build-and-push-app.yml  
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
     with:
       aws_environment: prod
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
 
-
   build-and-push-lambdas:
-    uses: ./.github/workflows/build-and-push-lambdas.yml  
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
     with:
       aws_environment: prod
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
 
   deploy-cdk:
-    uses: ./.github/workflows/deploy-cdk.yml      
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
     with:
       aws_environment: prod
     needs: 
