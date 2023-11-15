@@ -19,28 +19,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo Hello
-        run: echo hello 
+        run: echo hello  ${{ vars.ECR_REPOSITORY }}
         env:
           AWS_ENVIRONMENT: prod
-      if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
+    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
 
   build-and-push-lambdas:
     runs-on: ubuntu-latest
     steps:
       - name: Echo Hello
-        run: echo hello 
+        run: echo hello  ${{ vars.ECR_REPOSITORY }}
         env:
           AWS_ENVIRONMENT: prod
-      if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
+    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
 
   deploy-cdk:
     runs-on: ubuntu-latest
     steps:
       - name: Echo Hello
-        run: echo hello 
+        run: echo hello  ${{ ECR_REPOSITORY }}
         env:
           AWS_ENVIRONMENT: prod
-      needs: 
+    needs: 
         - build-and-push-app
         - build-and-push-lambdas
-      if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'cdk'
+    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'cdk'
