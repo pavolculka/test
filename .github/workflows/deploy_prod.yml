@@ -18,26 +18,29 @@ jobs:
   build-and-push-app:
     runs-on: ubuntu-latest
     steps:
-      - run: echo hello
-    with:
-      aws_environment: prod
-    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
+      - name: Echo Hello
+        run: echo hello
+        env:
+          AWS_ENVIRONMENT: prod
+      if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
 
   build-and-push-lambdas:
     runs-on: ubuntu-latest
     steps:
-      - run: echo hello
-    with:
-      aws_environment: prod
-    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
+      - name: Echo Hello
+        run: echo hello
+        env:
+          AWS_ENVIRONMENT: prod
+      if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
 
   deploy-cdk:
     runs-on: ubuntu-latest
     steps:
-      - run: echo hello
-    with:
-      aws_environment: prod
-    needs: 
-      - build-and-push-app
-      - build-and-push-lambdas
-    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'cdk'
+      - name: Echo Hello
+        run: echo hello
+        env:
+          AWS_ENVIRONMENT: prod
+      needs: 
+        - build-and-push-app
+        - build-and-push-lambdas
+      if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'cdk'
