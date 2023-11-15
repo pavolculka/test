@@ -14,33 +14,46 @@ on:
           - lambda
           - cdk
 
+
 jobs:
+
   build-and-push-app:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo Hello
-        run: echo hello  ${{ vars.ECR_REPOSITORY }}
-        env:
-          AWS_ENVIRONMENT: prod
+    uses: ./.github/workflows/build-and-push-app.yml  
+    with:
+      aws_environment: prod
+    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
+  
+  update-service:
+    uses: ./.github/workflows/update-service.yml
+    with:
+      aws_environment: dev    
+    needs: build-and-push-app
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
 
+
+
   build-and-push-lambdas:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo Hello
-        run: echo hello  ${{ vars.ECR_REPOSITORY }}
-        env:
-          AWS_ENVIRONMENT: prod
+    uses: ./.github/workflows/build-and-push-lambdas.yml  
+    with:
+      aws_environment: prod
+    if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
+  
+  update-eventbridge:
+    if: |
+      startsWith(github.head_ref, 'CA-')
+    uses: ./.github/workflows/update-eventbridge.yml
+    with:
+      aws_environment: dev    
+    needs: build-and-push-lambdas    
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
 
+
+
   deploy-cdk:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo Hello
-        run: echo hello  ${{ vars.ECR_REPOSITORY }}
-        env:
-          AWS_ENVIRONMENT: prod
+    uses: ./.github/workflows/deploy-cdk.yml      
+    with:
+      aws_environment: prod
     needs: 
-        - build-and-push-app
-        - build-and-push-lambdas
+      - build-and-push-app
+      - build-and-push-lambdas
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'cdk'
