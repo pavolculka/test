@@ -24,7 +24,7 @@ jobs:
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'app'
   
   update-service:
-    uses: ./.github/workflows/update-service.yml
+    uses: ./.github/workflows/build-and-push-app.yml  
     with:
       aws_environment: dev    
     needs: build-and-push-app
@@ -33,7 +33,7 @@ jobs:
 
 
   build-and-push-lambdas:
-    uses: ./.github/workflows/build-and-push-lambdas.yml  
+    uses: ./.github/workflows/build-and-push-app.yml  
     with:
       aws_environment: prod
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'lambda'
@@ -41,7 +41,7 @@ jobs:
   update-eventbridge:
     if: |
       startsWith(github.head_ref, 'CA-')
-    uses: ./.github/workflows/update-eventbridge.yml
+    uses: ./.github/workflows/build-and-push-app.yml  
     with:
       aws_environment: dev    
     needs: build-and-push-lambdas    
@@ -50,7 +50,7 @@ jobs:
 
 
   deploy-cdk:
-    uses: ./.github/workflows/deploy-cdk.yml      
+    uses: ./.github/workflows/build-and-push-app.yml  
     with:
       aws_environment: prod
     needs: 
