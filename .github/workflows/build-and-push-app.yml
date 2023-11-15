@@ -1,0 +1,32 @@
+name: Docker build and push web app to AWS ECR
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      aws_environment:
+        required: true
+        type: string  
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ASSUME_ROLE: ${{ vars.ASSUME_ROLE }}
+
+jobs:
+  ecr-build-and-push:
+    environment: ${{ inputs.aws_environment }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build and push images for app
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+        run: |
+          echo -- $ECR_REGISTRY $ECR_REPOSITORY $BRANCH_TAG $AWS_REGION
