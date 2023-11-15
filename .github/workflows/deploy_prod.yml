@@ -50,7 +50,4 @@ jobs:
     uses: ./.github/workflows/build-and-push-app.yml  
     with:
       aws_environment: prod
-    needs: 
-      - build-and-push-app
-      - build-and-push-lambdas
     if: github.event.inputs.service_deploy == 'all' || github.event.inputs.service_deploy == 'cdk'
